@@ -1,0 +1,4 @@
+beautifulsoup4==4.11.1
+requests==2.22.0
+tabulate==0.8.10
+validators==0.20.0
