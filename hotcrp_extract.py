@@ -70,16 +70,17 @@ def main (url):
                 if len(all_matches)!=0:
                     numbers = [int(num) for num in re.findall(r"\d+", all_matches[0])]
                     # print(numbers)
-                    year = [int(num) for num in re.findall(r"\d+", link.text)]
-                    conf_name= link.text.replace(str(year[0]),"").strip()
+                    year = [int(num) for num in re.findall(r"\d+", link.text)][0]
+                    if len(str(year))==2: year+=2000
+                    conf_name= link.text.replace(str(year),"").strip()
                     conf_name="".join(list([val for val in conf_name if val.isalpha() or val.isnumeric()]))
-                    table_dict.append({"Conference/Workshop":conf_name,"Year":year[0],"Accepted":numbers[0],"Submissions":numbers[1],"Acceptance Rate":str(round(numbers[0]/numbers[1]*100,2))+" %"})
+                    table_dict.append({"Conference/Workshop":conf_name,"Year":year,"Accepted":numbers[0],"Submissions":numbers[1],"Acceptance Rate":str(round(numbers[0]/numbers[1]*100,2))+" %","Link":link["href"]})
                     conf_names.append(conf_name)
                 # print(all_matches)
                 unique_links.add(link['href'])
         print("\n")
         conf_name = most_common_str(conf_names)
-        table_dict= sorted(table_dict, key= lambda x: x["Year"])
+        table_dict= sorted(table_dict, key= lambda x: (x["Year"]))
         print_table(table_dict,conf_name)
     else:
         print("Invalid URL")
